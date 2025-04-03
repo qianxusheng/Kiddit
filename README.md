@@ -119,6 +119,37 @@ Content-Type: application/json
 GET http://localhost:8080/api/users
 ```
 
+### 8. Development Standards
+
+#### API Response Standard
+
+To ensure consistency and maintainability in data transmission between the frontend and backend, all backend APIs must adhere to the following standard response format. This format includes three main fields: `status`, `message`, and `data`.
+
+- **status**: The status code of the request processing, using HTTP status codes or custom status codes. Common status codes include:
+  - `200`: Request was successful.
+  - `400`: Bad request or invalid input.
+  - `500`: Internal server error.
+
+- **message**: The response message, providing a brief description of the status or error, to be processed or displayed to the user on the frontend.
+
+- **data**: The data portion of the response, containing the actual data returned by the API. If the request is successful, `data` will contain the relevant information; if the request fails, `data` can be `null`.
+
+#### Examples
+
+1. **Successful Response**
+   When a request is successful, the response format should be as follows:
+   ```json
+   {
+     "status": 200,
+     "message": "Request was successful",
+     "data": {
+       "id": 1,
+       "username": "testuser",
+       "email": "testuser@example.com"
+     }
+   }
+
+
 ## Contribution Guidelines
 If you want to contribute to Kiddit, please fork this project and submit a Pull Request.
 
