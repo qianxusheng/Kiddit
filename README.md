@@ -42,7 +42,7 @@ cd /kiddit/web
 npm install
 ```
 
-**Angular Official Documentation**: [Angular Framework](https://angular.io/)
+**Angular Official Documentation**: [Angular Framework](https://angular.io/) - This documentation is an excellent resource for learning Angular, providing comprehensive guides and tutorials to help you master the framework.
 
 ### 4. Backend Setup
 
@@ -69,8 +69,22 @@ cd kiddit
 mvn spring-boot:run
 ```
 
-### 6. Database Management
+### 6. Database Management & Backend Configuration
 This project uses **MySQL** as the database. Please use **MySQL Workbench 8.0** to connect to the database and view data.
+
+The backend uses a MySQL database, and the connection settings are specified in the `application.properties` file:
+```properties
+spring.application.name=Kiddit
+
+spring.datasource.url=jdbc:mysql://159.65.239.201:3306/xuq8?useSSL=false&serverTimezone=UTC
+spring.datasource.username=xuq8
+spring.datasource.password=infsci2710_4814315
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+```
+Ensure that your MySQL server is running and properly configured to accept connections.
 
 ### 7. API Testing
 
@@ -113,4 +127,3 @@ This project follows the MIT license. Please refer to the LICENSE file for detai
 
 ---
 Thank you for your support! Enjoy using Kiddit! 🚀
-
