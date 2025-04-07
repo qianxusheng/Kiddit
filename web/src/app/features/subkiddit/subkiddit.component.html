@@ -1,0 +1,15 @@
+<!-- subkiddit.component.html -->
+<div class="subkiddit-container">
+  <div *ngFor="let post of posts" class="subkiddit-btn-container"
+    [routerLink]="['/post', post.postId]">
+    <h4>{{ post.subject }}</h4>
+    <p>{{ post.description }}</p>
+    <small>Created by {{ post.createdByFirstName }} {{ post.createdByLastName }} at {{ post.createdAt }}</small>
+  </div>
+</div>
+
+<mat-paginator [length]="totalPosts"
+               [pageSize]="pageSize"
+               [pageIndex]="page - 1"
+               (page)="onPageChange($event)">
+</mat-paginator>

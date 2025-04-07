@@ -1,0 +1,32 @@
+<div class="profile-container" *ngIf="userProfile; else loading">
+  <h2 class="profile-title">User Profile</h2>
+
+  <div class="profile-content">
+    <div class="avatar-section">
+      <img *ngIf="userProfile.avatarUrl" [src]="userProfile.avatarUrl" alt="User Avatar" />
+    </div>
+    <div class="bio-section">
+      <p><strong>Bio:</strong></p>
+      <p>{{ userProfile.bio }}</p>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <p class="loading-text">Loading user profile...</p>
+</ng-template>
+
+<div class="category-section">
+  <h2 class="section-title">Your Favorite Categories</h2>
+
+  <div class="category-container">
+    <div *ngFor="let category of categories" class="category-box">
+      <span class="category-name">{{ category.subject }}</span>
+      <button (click)="removeCategory(category.categoryId)" class="delete-btn">×</button>
+    </div>
+  </div>
+</div>
+
+<div class="return-home-wrapper">
+  <button class="return-home-btn" (click)="returnHome()">return</button>
+</div>

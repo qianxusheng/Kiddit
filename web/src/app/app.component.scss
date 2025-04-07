@@ -1,0 +1,82 @@
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 90px; 
+  padding: 0 40px;
+  background: linear-gradient(90deg, #004ba0, #0066cc); 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 60px; 
+  margin-right: 16px;
+}
+
+.brand-text {
+  font-size: 30px;
+  font-weight: 700;
+  color: #ffe082; 
+  letter-spacing: 1px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-info {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.welcome {
+  font-size: 18px;
+  color: #f1f1f1;
+  opacity: 0.9;
+}
+
+.username {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffeb3b;
+}
+
+.menu-button {
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #ffd54f;
+  color: #003366;
+  border-radius: 24px;
+  padding: 10px 20px;
+  text-transform: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s ease;
+}
+
+.menu-button:hover {
+  background-color: #ffca28;
+}
+
+.mat-menu {
+  background-color: #ffffff;
+}
+
+.mat-menu-item {
+  font-size: 16px;
+  color: #333;
+}
+
+.main-content {
+  max-width: 1200px;        
+  margin: 24px auto;         
+  padding: 0 20px;          
+  box-sizing: border-box;   
+}

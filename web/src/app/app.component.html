@@ -1,1 +1,29 @@
-<router-outlet></router-outlet>
+<div class="toolbar" *ngIf="showToolbar">
+  <!-- Left side: Logo + Brand -->
+  <div class="left">
+    <img src="logo.png" alt="Kiddit Logo" class="logo" />
+    <span class="brand-text">Kiddit</span>
+  </div>
+
+  <!-- Right side: Welcome + User Name + Menu -->
+  <div class="right" *ngIf="userInfo">
+    <div class="user-info">
+      <span class="welcome">Welcome,</span>
+      <span class="username">{{ userInfo.firstName }} {{ userInfo.lastName }}</span>
+    </div>
+
+    <button mat-button [matMenuTriggerFor]="userMenu" class="menu-button">
+      Menu
+    </button>
+
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="onHome()">Home</button>
+      <button mat-menu-item (click)="onProfile()">Profile</button>
+      <button mat-menu-item (click)="onLogout()">Logout</button>
+    </mat-menu>
+  </div>
+</div>
+
+<div class="main-content" [ngClass]="{'main-content': !isLoginPage}">
+  <router-outlet></router-outlet>
+</div>

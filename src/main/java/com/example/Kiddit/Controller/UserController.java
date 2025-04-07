@@ -1,17 +1,17 @@
 package com.example.Kiddit.Controller;
 
+import com.example.Kiddit.DataTransferObject.LoginResponseDTO;
 import com.example.Kiddit.Entity.User;
 import com.example.Kiddit.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.Kiddit.DataTransferObject.RegisterRequestDTO;
+import com.example.Kiddit.DataTransferObject.UserInfoResponseDTO;
 
 import java.util.Map;
-import java.util.HashMap;
 
-// entity(table) -> repository(ez query) -> service(complex logic) -> controller(http request)
-@CrossOrigin(origins = "http://localhost:4200")  // CORS configuration for frontend access
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -23,43 +23,55 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Registration endpoint
-    // @RequestBody json format (many key-value pairs)
-    // also return json format message to the frontend
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> registerUser(@RequestBody User user) {
-        Map<String, String> response = new HashMap<>();
-        
+    public ResponseEntity<Void> registerUser(@RequestBody RegisterRequestDTO registerRequestDTO) {
         try {
-            userService.registerUser(user);  
-            response.put("message", "User registered successfully");
-            response.put("status", "success");
-            return new ResponseEntity<>(response, HttpStatus.CREATED); // HttpStatus.CREATED = 201, it's http status code
+            User user = new User();
+            user.setNickName(registerRequestDTO.getNickName());
+            user.setFirstName(registerRequestDTO.getFirstName());
+            user.setLastName(registerRequestDTO.getLastName());
+            user.setEmail(registerRequestDTO.getEmail());
+            user.setPassword(registerRequestDTO.getPassword());
+    
+            userService.registerUser(user);
+    
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (IllegalArgumentException e) {
-            response.put("message", e.getMessage());
-            response.put("status", "error");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); // HttpStatus.BAD_REQUEST = 400
+            return ResponseEntity.badRequest().build();
         }
     }
 
-    // Login endpoint
-    // Map<String, String> credentials = {email: "email", password: "password"}, same as json format
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> loginUser(@RequestBody Map<String, String> credentials) {
+    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody Map<String, String> credentials) {
         String email = credentials.get("email");
         String password = credentials.get("password");
-        
-        Map<String, String> response = new HashMap<>();
 
         try {
-            User user = userService.loginUser(email, password);  
-            response.put("message", "Login successful: " + user.getFirstName());
-            response.put("status", "success");
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            Map<String, Object> loginResult = userService.loginUser(email, password);
+            String token = (String) loginResult.get("token");
+            User user = (User) loginResult.get("user");
+
+            // Create a new DTO to return the user data
+            LoginResponseDTO loginResponse = new LoginResponseDTO();
+            loginResponse.setFirstName(user.getFirstName());
+            loginResponse.setLastName(user.getLastName());
+            loginResponse.setUserId((long) user.getUserId());
+            // Assuming the token is generated on the server-side after login
+            loginResponse.setToken(token);
+
+            return ResponseEntity.ok(loginResponse); // Return OK with the LoginResponseDTO
         } catch (IllegalArgumentException e) {
-            response.put("message", e.getMessage());
-            response.put("status", "error");
-            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // Return 401 Unauthorized if credentials are wrong
+        }
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<UserInfoResponseDTO> getUserInfo(@RequestParam("userId") Long userId) {
+        try {
+            UserInfoResponseDTO userInfo = userService.getUserInfo(userId);
+            return ResponseEntity.ok(userInfo); 
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
         }
     }
 }

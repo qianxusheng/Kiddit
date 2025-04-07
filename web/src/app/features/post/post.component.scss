@@ -1,0 +1,97 @@
+/* Styles for post section */
+.post-wrapper {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.post-meta {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.post-description {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+  margin-top: 15px;
+}
+
+/* Comment and Sub-comment Styles */
+.comments-section {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.comment-card {
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.subcomment-card {
+  background-color: #f1f1f1;
+  padding: 12px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.comment-user, .subcomment-user {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+}
+
+.comment-time, .subcomment-time {
+  font-size: 0.9rem;
+  color: #777;
+  margin-left: 10px;
+}
+
+.comment-content, .subcomment-content {
+  font-size: 1rem;
+  margin-top: 10px;
+  color: #444;
+  line-height: 1.6;
+}
+
+button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #242524;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Pagination Style */
+mat-paginator {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  background-color: transparent;
+}
