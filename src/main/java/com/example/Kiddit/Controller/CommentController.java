@@ -15,6 +15,14 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    /**
+     * Get a paginated list of comments for a specific post.
+     *
+     * @param postId the ID of the post
+     * @param page the page number to retrieve (default is 0)
+     * @param size the number of comments per page (default is 10)
+     * @return paginated list of CommentDTOs
+     */
     @GetMapping
     public ResponseEntity<Page<CommentDTO>> getComments(
             @PathVariable Long postId,
@@ -25,10 +33,23 @@ public class CommentController {
         return ResponseEntity.ok(comments);
     }
 
+    /**
+     * Add a new comment to a specific post.
+     *
+     * @param postId the ID of the post to which the comment will be added
+     * @param commentRequest a DTO containing userId and comment content
+     * @return the added CommentDTO
+     */
     @PostMapping
-    public ResponseEntity<CommentDTO> addComment(@PathVariable Long postId,
-                                                 @RequestBody CommentRequestDTO commentRequest) {
-        CommentDTO comment = commentService.addComment(postId, commentRequest.getUserId(), commentRequest.getContent());
+    public ResponseEntity<CommentDTO> addComment(
+            @PathVariable Long postId,
+            @RequestBody CommentRequestDTO commentRequest
+    ) {
+        CommentDTO comment = commentService.addComment(
+                postId,
+                commentRequest.getUserId(),
+                commentRequest.getContent()
+        );
         return ResponseEntity.ok(comment);
     }
 }

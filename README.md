@@ -37,21 +37,19 @@ The `src` folder inside the backend contains backend source code.
 
 The `pom.xml` file in the backend folder manages backend dependencies.
 
+The `package.json` file in the `Web` folder manages front dependencies.
+
+
 ### 3. Frontend Setup
 #### Install Node.js and npm
 Download and install **Node.js** (latest recommended version) from [Node.js Official Website](https://nodejs.org/en) **npm** comes bundled with Node.js.
-You can globally install Angular CLI by running npm install -g @angular/cli, which will allow you to use the **ng serve** command. For more information and documentation about **Angular**, visit the [Angular Official Website](https://angular.dev/tutorials/learn-angular).
-```
-npm install -g @angular/cli
-npm install @angular/material
-```
 
 #### Install Frontend Dependencies
 ```sh
 cd kiddit/web
 npm install
 ```
-Refer to the Angular Official Documentation for more details.
+Refer to the [Angular Official Documentation](https://angular.dev/tutorials/learn-angular) for more details.
 
 ### 4. Backend Setup
 #### Install Maven

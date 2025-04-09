@@ -1,6 +1,6 @@
 package com.example.Kiddit.Controller;
 
-import com.example.Kiddit.DataTransferObject.SubCommentDTO; 
+import com.example.Kiddit.DataTransferObject.SubCommentDTO;
 import com.example.Kiddit.Service.SubCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +14,14 @@ public class SubCommentController {
     @Autowired
     private SubCommentService subCommentService;
 
+    /**
+     * Get a paginated list of subcomments (replies) for a specific parent comment.
+     *
+     * @param commentId the ID of the parent comment
+     * @param page the page number to retrieve (default is 0)
+     * @param size the number of subcomments per page (default is 5)
+     * @return a Page of SubCommentDTOs representing the replies to the given comment
+     */
     @GetMapping("/comment/{commentId}/subcomments")
     public ResponseEntity<Page<SubCommentDTO>> getSubCommentsByCommentId(
             @PathVariable Long commentId,
@@ -24,4 +32,3 @@ public class SubCommentController {
         return ResponseEntity.ok(subComments);
     }
 }
-

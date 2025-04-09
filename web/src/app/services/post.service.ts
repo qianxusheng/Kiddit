@@ -38,40 +38,44 @@ export interface SubCommentDTO {
 @Injectable({
   providedIn: 'root'
 })
+
 export class PostService {
-  private apiUrl = 'http://localhost:8080/api';  
+  private apiUrl = 'http://localhost:8080/api';  // API base URL
 
   constructor(private http: HttpClient) {}
 
+  // Fetches posts for a specific subKiddit with pagination
   getPostsBySubKiddit(subKidditId: number, page: number, size: number): Observable<PageResponse<PostDTO>> {
     return this.http.get<PageResponse<PostDTO>>(`${this.apiUrl}/${subKidditId}/posts`, {
         params: {
-            page: page.toString(),
-            size: size.toString()
-          }
+            page: page.toString(), // Page number as query param
+            size: size.toString()  // Items per page as query param
+        }
     });
   }
   
+  // Fetches comments for a specific post with pagination
   getComments(postId: number, page: number, size: number): Observable<PageResponse<CommentDTO>> {
     return this.http.get<PageResponse<CommentDTO>>(`${this.apiUrl}/posts/${postId}/comments`, {
         params: {
-          page: page.toString(),
-          size: size.toString() 
+          page: page.toString(), // Page number as query param
+          size: size.toString()  // Items per page as query param
         }
       });
   }
 
+  // Fetches subcomments for a specific comment with pagination
   getSubComments(commentId: number, page: number, size: number): Observable<PageResponse<SubCommentDTO>> {
     return this.http.get<PageResponse<SubCommentDTO>>(`${this.apiUrl}/comment/${commentId}/subcomments`, {
       params: {
-        page: page.toString(),
-        size: size.toString()
+        page: page.toString(), // Page number as query param
+        size: size.toString()  // Items per page as query param
       }
     });
   }
   
+  // Fetches a specific post by its ID
   getPostById(postId: number): Observable<PostDTO> {
     return this.http.get<PostDTO>(`${this.apiUrl}/posts/${postId}`);
   }
-
 }

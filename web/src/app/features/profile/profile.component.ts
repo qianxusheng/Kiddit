@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -12,9 +11,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  userProfile: any = null; 
-  userId!: number;
-  categories: any[] = []; 
+  userProfile: any = null; // Stores user profile data
+  userId!: number; // Logged-in user's ID
+  categories: any[] = []; // User's selected categories
 
   constructor(
     private userService: UserService,
@@ -22,24 +21,31 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Get userId from localStorage
     this.userId = Number(localStorage.getItem('userId'));
-    
+
     if (!isNaN(this.userId)) {
-      this.fetchUserProfile();
-      this.loadCategories(); 
+      this.fetchUserProfile();  // Load user profile data
+      this.loadCategories();    // Load user's selected categories
     } else {
       console.error('Invalid user ID');
     }
   }
 
+  /**
+   * Navigates back to the homepage
+   */
   returnHome() {
     this.route.navigateByUrl('/home');
   }
 
+  /**
+   * Fetches user profile information from the backend
+   */
   fetchUserProfile(): void {
     this.userService.getUserProfile(this.userId).subscribe({
       next: (profile) => {
-        this.userProfile = profile; 
+        this.userProfile = profile;
       },
       error: (err) => {
         console.error('Error fetching user profile:', err);
@@ -47,10 +53,13 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Loads all category selections for the current user
+   */
   loadCategories() {
     this.userService.getUserAllCategories(this.userId).subscribe({
       next: (data: any) => {
-        this.categories = data; 
+        this.categories = data;
       },
       error: (err) => {
         console.error('Error fetching categories:', err);
@@ -58,10 +67,14 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Removes a category from the user's preferences
+   * @param categoryId - ID of the category to remove
+   */
   removeCategory(categoryId: number) {
     this.userService.removeCategory(this.userId, categoryId).subscribe({
       next: () => {
-        this.loadCategories(); 
+        this.loadCategories(); // Reload the updated category list
       },
       error: (err) => {
         console.error('Error removing category:', err);

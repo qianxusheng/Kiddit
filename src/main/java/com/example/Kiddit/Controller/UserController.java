@@ -1,7 +1,6 @@
 package com.example.Kiddit.Controller;
 
 import com.example.Kiddit.DataTransferObject.LoginResponseDTO;
-import com.example.Kiddit.Entity.User;
 import com.example.Kiddit.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,58 +17,56 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired // Constructor-based dependency injection
-    public UserController(UserService userService) { // java contructor
+    @Autowired
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Registers a new user with the provided registration details.
+     *
+     * @param registerRequestDTO the registration details including user information
+     * @return ResponseEntity with a CREATED status if registration is successful, or BAD_REQUEST if there's an issue
+     */
     @PostMapping("/register")
     public ResponseEntity<Void> registerUser(@RequestBody RegisterRequestDTO registerRequestDTO) {
         try {
-            User user = new User();
-            user.setNickName(registerRequestDTO.getNickName());
-            user.setFirstName(registerRequestDTO.getFirstName());
-            user.setLastName(registerRequestDTO.getLastName());
-            user.setEmail(registerRequestDTO.getEmail());
-            user.setPassword(registerRequestDTO.getPassword());
-    
-            userService.registerUser(user);
-    
+            userService.registerUser(registerRequestDTO);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
+    /**
+     * Logs in a user using the provided credentials (email and password).
+     *
+     * @param credentials a map containing the user's email and password
+     * @return ResponseEntity with a LoginResponseDTO on successful login, or UNAUTHORIZED status if credentials are invalid
+     */
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody Map<String, String> credentials) {
-        String email = credentials.get("email");
-        String password = credentials.get("password");
-
         try {
-            Map<String, Object> loginResult = userService.loginUser(email, password);
-            String token = (String) loginResult.get("token");
-            User user = (User) loginResult.get("user");
-
-            // Create a new DTO to return the user data
-            LoginResponseDTO loginResponse = new LoginResponseDTO();
-            loginResponse.setFirstName(user.getFirstName());
-            loginResponse.setLastName(user.getLastName());
-            loginResponse.setUserId((long) user.getUserId());
-            // Assuming the token is generated on the server-side after login
-            loginResponse.setToken(token);
-
-            return ResponseEntity.ok(loginResponse); // Return OK with the LoginResponseDTO
+            String email = credentials.get("email");
+            String password = credentials.get("password");
+            LoginResponseDTO response = userService.loginUser(email, password);
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // Return 401 Unauthorized if credentials are wrong
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
+    /**
+     * Retrieves detailed information of a user based on their user ID.
+     *
+     * @param userId the ID of the user whose information is to be fetched
+     * @return ResponseEntity with the UserInfoResponseDTO containing the user's details, or INTERNAL_SERVER_ERROR if an error occurs
+     */
     @GetMapping("/info")
     public ResponseEntity<UserInfoResponseDTO> getUserInfo(@RequestParam("userId") Long userId) {
         try {
             UserInfoResponseDTO userInfo = userService.getUserInfo(userId);
-            return ResponseEntity.ok(userInfo); 
+            return ResponseEntity.ok(userInfo);
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }

@@ -19,6 +19,14 @@ public class PostService {
     @Autowired
     private SubKidditRepository subKidditRepository;
 
+    /**
+     * Retrieves a paginated list of posts belonging to a specific SubKiddit.
+     * 
+     * @param subKidditId the ID of the SubKiddit
+     * @param page the page number to retrieve (default is 0)
+     * @param size the number of items per page (default is 10)
+     * @return a Page of PostDTOs for the specified SubKiddit
+     */
     public Page<PostDTO> getPostsBySubKiddit(Long subKidditId, int page, int size) {
         SubKiddit subKiddit = subKidditRepository.findById(subKidditId)
                 .orElseThrow(() -> new RuntimeException("SubKiddit not found with ID: " + subKidditId));
@@ -37,6 +45,12 @@ public class PostService {
         });
     }
 
+    /**
+     * Retrieves a specific post by its ID.
+     * 
+     * @param postId the ID of the post
+     * @return the PostDTO corresponding to the post with the given ID
+     */
     public PostDTO getPostById(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
@@ -51,6 +65,4 @@ public class PostService {
 
         return postDTO;
     }
-
-    
 }

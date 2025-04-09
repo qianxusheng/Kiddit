@@ -21,6 +21,14 @@ public class CommentService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Retrieves a paginated list of comments for a specific post.
+     *
+     * @param postId the ID of the post whose comments are to be fetched
+     * @param page the page number to retrieve (default is 0)
+     * @param size the number of items per page (default is 10)
+     * @return a Page of CommentDTOs corresponding to the comments on the specified post
+     */
     public Page<CommentDTO> getCommentsByPost(Long postId, int page, int size) {
         Post post = new Post();
         post.setPostId(postId);
@@ -37,6 +45,15 @@ public class CommentService {
         ));
     }
 
+    /**
+     * Adds a new comment to a specific post by a user.
+     *
+     * @param postId the ID of the post to comment on
+     * @param userId the ID of the user adding the comment
+     * @param content the content of the comment
+     * @return a CommentDTO representing the added comment
+     * @throws RuntimeException if the user is not found
+     */
     public CommentDTO addComment(Long postId, Long userId, String content) {
         Post post = new Post();
         post.setPostId(postId);

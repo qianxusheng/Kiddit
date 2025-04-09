@@ -1,10 +1,14 @@
+<!-- User Profile Section -->
 <div class="profile-container" *ngIf="userProfile; else loading">
   <h2 class="profile-title">User Profile</h2>
 
   <div class="profile-content">
+    <!-- Avatar Section -->
     <div class="avatar-section">
       <img *ngIf="userProfile.avatarUrl" [src]="userProfile.avatarUrl" alt="User Avatar" />
     </div>
+
+    <!-- Bio Section -->
     <div class="bio-section">
       <p><strong>Bio:</strong></p>
       <p>{{ userProfile.bio }}</p>
@@ -12,21 +16,27 @@
   </div>
 </div>
 
+<!-- Loading State Template -->
 <ng-template #loading>
   <p class="loading-text">Loading user profile...</p>
 </ng-template>
 
+<!-- Favorite Categories Section -->
 <div class="category-section">
   <h2 class="section-title">Your Favorite Categories</h2>
 
   <div class="category-container">
+    <!-- Loop through user's selected categories -->
     <div *ngFor="let category of categories" class="category-box">
       <span class="category-name">{{ category.subject }}</span>
+
+      <!-- Delete button to remove category -->
       <button (click)="removeCategory(category.categoryId)" class="delete-btn">×</button>
     </div>
   </div>
 </div>
 
+<!-- Return Home Button -->
 <div class="return-home-wrapper">
   <button class="return-home-btn" (click)="returnHome()">return</button>
 </div>

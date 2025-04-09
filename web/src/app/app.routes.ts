@@ -6,7 +6,7 @@ import { PostComponent } from './features/post/post.component';
 import { LoginComponent } from './features/login/login.component';
 import { AuthGuard } from './auth/auth.guard'; 
 
-
+// router configuration
 export const routes: Routes = [
     { path: 'login', component: LoginComponent},
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },

@@ -1,9 +1,11 @@
+// style for subkiddit container --> the card which contains all the subkiddit for certain category
 .subkiddit-container {
   display: flex; 
   flex-wrap: wrap; 
   gap: 16px; 
 }
 
+// the style for each subkiddit
 .subkiddit-btn-container {
   cursor: pointer; 
   display: flex; 
@@ -35,6 +37,7 @@
   color: #999;
 }
 
+// style for category card
 .category-card {
   width: 100%;  
   max-width: 1200px;  

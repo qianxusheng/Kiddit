@@ -26,6 +26,13 @@ public class CategoryController {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Retrieve all categories associated with the specified user.
+     * This returns the user's selected/favorite categories.
+     *
+     * @param userId the ID of the user
+     * @return list of categories the user is associated with
+     */
     @GetMapping("/users/{userId}/categories/all")
     public ResponseEntity<List<Category>> getUserCategories(@PathVariable int userId) {
         User user = userRepository.findById(userId)
@@ -34,6 +41,15 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
+    /**
+     * Retrieve paginated categories associated with the specified user.
+     * Useful when the user has a large number of categories.
+     *
+     * @param userId the ID of the user
+     * @param page the page number (default 0)
+     * @param size the size of each page (default 10)
+     * @return paginated categories of the user
+     */
     @GetMapping("/users/{userId}/categories")
     public ResponseEntity<Page<Category>> getUserCategories(
             @PathVariable int userId,
@@ -44,18 +60,39 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
+    /**
+     * Retrieve detailed information about a specific category.
+     *
+     * @param categoryId the ID of the category
+     * @return the category details
+     */
     @GetMapping("/categories/{categoryId}")
     public ResponseEntity<Category> getCategoryInformation(@PathVariable int categoryId) {
         Category category = categoryService.getCategoryInformation(categoryId);
         return ResponseEntity.ok(category);
     }
 
+    /**
+     * Get a list of all available categories.
+     * This can be used on the profile page for users to choose interests.
+     *
+     * @return list of all categories
+     */
     @GetMapping("/profile/categories")
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);
     }
 
+    // didn't use yet.
+    /**
+     * Add or update categories that a user is interested in.
+     * Accepts a JSON body with a list of category IDs.
+     *
+     * @param userId the ID of the user
+     * @param categoryIdsMap a JSON map with key "categoryIds" containing a list of category IDs
+     * @return success or error message
+     */
     @PutMapping("/profile/{userId}/categories")
     public ResponseEntity<String> addUserCategories(@PathVariable int userId, @RequestBody Map<String, List<Integer>> categoryIdsMap) {
         try {
@@ -72,6 +109,13 @@ public class CategoryController {
         }
     }
 
+    /**
+     * Remove a specific category from a user's selected categories.
+     *
+     * @param userId the ID of the user
+     * @param categoryId the ID of the category to remove
+     * @return message indicating success or failure
+     */
     @DeleteMapping("/{userId}/categories/{categoryId}")
     public ResponseEntity<Map<String, String>> removeUserCategory(
             @PathVariable int userId,

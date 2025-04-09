@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef  } from '@angular/core';
+import { Component, ChangeDetectorRef, OnDestroy  } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService, UserInfo } from './services/auth.service';
 import { Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -14,12 +15,13 @@ import { MatMenuModule } from '@angular/material/menu';
   styleUrl: './app.component.scss'
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'kiddit';
   userId: number | null = null;
   userInfo: UserInfo | null = null;
   showToolbar = true;
   isLoginPage = false;
+  private routerSubscription!: Subscription;
 
   constructor(private authService: AuthService,
               private router: Router,
@@ -57,5 +59,12 @@ export class AppComponent implements OnInit {
 
   onProfile() {
     this.router.navigate(['/profile/' + this.userId]);
+  }
+
+  ngOnDestroy() {
+    // Unsubscribe to prevent memory leaks
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
 }
