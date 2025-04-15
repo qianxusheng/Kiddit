@@ -3,14 +3,14 @@ import { UserService, CategoryDTO, SubKidditDTO, PageResponse } from '../../serv
 import { MatPaginator } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms'; // Import FormsModule for ngModel
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  imports: [MatPaginator, CommonModule, RouterModule],
+  imports: [MatPaginator, CommonModule, RouterModule, FormsModule], // Include FormsModule here
   styleUrls: ['./home.component.scss']
 })
-
 export class HomeComponent implements OnInit {
   // Placeholder for all user's categories
   categories: CategoryDTO[] = [];  
@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
   totalItemsSubKiddit: { [key: number]: number } = {};  
 
   // Authentication token retrieved from localStorage
-  token!: string| null; 
+  token!: string | null; 
 
   // User ID retrieved from localStorage
   userId!: number;
