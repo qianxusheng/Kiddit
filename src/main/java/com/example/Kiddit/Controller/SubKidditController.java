@@ -13,6 +13,14 @@ public class SubKidditController {
     @Autowired
     private SubKidditService subKidditsService;
 
+    /**
+     * Get a paginated list of SubKiddits (communities) under a specific category.
+     *
+     * @param categoryId the ID of the category
+     * @param page the page number to retrieve (default is 0)
+     * @param size the number of items per page (default is 10)
+     * @return a Page of SubKidditDTOs belonging to the specified category
+     */
     @GetMapping("/category/{categoryId}")
     public Page<SubKidditDTO> getSubKidditsByCategory(
             @PathVariable Long categoryId,

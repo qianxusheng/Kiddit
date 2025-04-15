@@ -1,12 +1,10 @@
 package com.example.Kiddit.Service;
 
+import com.example.Kiddit.DataTransferObject.RegisterRequestDTO;
+import com.example.Kiddit.DataTransferObject.LoginResponseDTO;
 import com.example.Kiddit.DataTransferObject.UserInfoResponseDTO;
 import com.example.Kiddit.Entity.User;
 import com.example.Kiddit.Repository.UserRepository;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,23 +13,47 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Service
 public class UserService {
 
+    private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    private UserRepository userRepository;
-
-    private JwtUtil jwtUtil = new JwtUtil();  // Use the JwtUtil class
-
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-    public User registerUser(User user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new IllegalArgumentException("Email is already registered");
-        }
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        return userRepository.save(user);
+    public UserService(UserRepository userRepository, JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
+        this.passwordEncoder = new BCryptPasswordEncoder(); // You could also inject this if preferred
     }
 
-    public Map<String, Object> loginUser(String email, String password) {
+    /**
+     * Registers a new user by saving the user details into the database.
+     *
+     * @param dto the registration details of the user
+     * @throws IllegalArgumentException if the email is already registered
+     */
+    public void registerUser(RegisterRequestDTO dto) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new IllegalArgumentException("Email is already registered");
+        }
+
+        User user = new User();
+        user.setNickName(dto.getNickName());
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        userRepository.save(user);
+    }
+
+    /**
+     * Authenticates a user by checking the email and password.
+     *
+     * @param email    the email of the user trying to log in
+     * @param password the password provided by the user
+     * @return a response containing user details and JWT token
+     * @throws IllegalArgumentException if the credentials are invalid
+     */
+    public LoginResponseDTO loginUser(String email, String password) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
 
@@ -39,25 +61,34 @@ public class UserService {
             throw new IllegalArgumentException("Invalid credentials");
         }
 
-        // Generate JWT token upon successful login
         String token = jwtUtil.generateToken((long) user.getUserId(), user.getFirstName(), user.getLastName());
 
-        // Prepare the response with both the token and user data
-        Map<String, Object> response = new HashMap<>();
-        response.put("token", token);  // Return JWT token
-        response.put("user", user);    // Return the user object
+        LoginResponseDTO dto = new LoginResponseDTO();
+        dto.setUserId((long) user.getUserId());
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setToken(token);
 
-        return response;
-        }     
-    
+        return dto;
+    }
+
+    /**
+     * Fetches user information based on the user ID.
+     *
+     * @param userId the ID of the user whose information is to be retrieved
+     * @return a response containing user information
+     * @throws IllegalArgumentException if the user is not found
+     */
     public UserInfoResponseDTO getUserInfo(Long userId) {
-        User user = userRepository.findById(userId.intValue()).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User user = userRepository.findById(userId.intValue())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
         UserInfoResponseDTO userInfo = new UserInfoResponseDTO();
         userInfo.setUserId((long) user.getUserId());
         userInfo.setFirstName(user.getFirstName());
         userInfo.setLastName(user.getLastName());
         userInfo.setEmail(user.getEmail());
+
         return userInfo;
     }
-
 }

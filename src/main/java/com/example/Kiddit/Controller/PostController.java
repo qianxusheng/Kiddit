@@ -5,11 +5,7 @@ import com.example.Kiddit.Service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -18,15 +14,29 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+    /**
+     * Get a paginated list of posts under a specific SubKiddit (i.e., a community or category).
+     *
+     * @param subKidditId the ID of the SubKiddit
+     * @param page the page number to retrieve (default is 0)
+     * @param size the number of posts per page (default is 10)
+     * @return a Page object containing PostDTOs for the requested SubKiddit
+     */
     @GetMapping("/{subKidditId}/posts")
     public Page<PostDTO> getPostsBySubKiddit(
             @PathVariable Long subKidditId,
-            @RequestParam(defaultValue = "0") int page,  
-            @RequestParam(defaultValue = "10") int size  
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ) {
         return postService.getPostsBySubKiddit(subKidditId, page, size);
     }
 
+    /**
+     * Retrieve a specific post by its ID.
+     *
+     * @param postId the ID of the post
+     * @return the PostDTO representing the post's details
+     */
     @GetMapping("/posts/{postId}")
     public ResponseEntity<PostDTO> getPostById(@PathVariable Long postId) {
         PostDTO post = postService.getPostById(postId);
