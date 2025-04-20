@@ -4,11 +4,16 @@ import { MatPaginator } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+
 
 @Component({
   selector: 'app-subkiddit',
   templateUrl: './subkiddit.component.html',
-  imports: [MatPaginator, CommonModule, RouterModule],
+  imports: [MatPaginator, CommonModule, RouterModule, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
   styleUrls: ['./subkiddit.component.scss']
 })
 export class SubkidditComponent implements OnInit {
@@ -17,6 +22,14 @@ export class SubkidditComponent implements OnInit {
   page: number = 1; // Current page index (starts from 1 for UI)
   pageSize: number = 10; // Number of posts to display per page
   subKidditId!: number; // ID of the selected SubKiddit (retrieved from route)
+    // User ID retrieved from localStorage
+  userId!: number;
+  newPost = {
+    subject: '',
+    description: ''
+  }; // Object to hold new post data for creation
+  isCreatingPost: boolean = false; // Flag to indicate if a new post is being created
+  showCreatePostForm: boolean = false; // Flag to toggle the post creation form
 
   constructor(
     private postService: PostService,
@@ -31,6 +44,40 @@ export class SubkidditComponent implements OnInit {
     // Load the posts for this SubKiddit
     this.loadPosts();
   }
+  
+  /**
+   * Toggles the visibility of the post creation form.
+   */
+  createPost(): void {
+    if (!this.newPost.subject || !this.newPost.description) return;
+  
+    this.isCreatingPost = true;
+
+    this.userId = Number(localStorage.getItem('userId'));
+
+    const payload: PostDTO = {
+      postId: 0, // placeholder, backend will assign
+      subject: this.newPost.subject,
+      description: this.newPost.description,
+      createdByFirstName: '',
+      createdByLastName: '',
+      createdAt: '',
+      userId: this.userId
+    };
+
+    this.postService.createPost(this.subKidditId, payload).subscribe({
+      next: (createdPost) => {
+        this.isCreatingPost = false;
+        this.showCreatePostForm = false;
+        this.newPost = { subject: '', description: '' };
+        this.loadPosts(); // Refresh post list
+      },
+      error: (err) => {
+        this.isCreatingPost = false;
+        console.error('Failed to create post:', err);
+      }
+    });
+  }  
 
   /**
    * Loads a page of posts based on SubKiddit ID, page, and pageSize.
