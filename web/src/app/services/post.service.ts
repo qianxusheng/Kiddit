@@ -17,6 +17,7 @@ export interface PostDTO {
     createdByFirstName: string;
     createdByLastName: string;
     createdAt: string;
+    userId: number;
   }
 
 export interface CommentDTO {
@@ -52,6 +53,13 @@ export class PostService {
             size: size.toString()  // Items per page as query param
         }
     });
+  }
+
+  // Create a new post in a specific subKiddit
+  // Takes subKidditId and post details as parameters
+  // Returns an Observable of PostDTO
+  createPost(subKidditId: number, post: PostDTO): Observable<PostDTO> {
+    return this.http.post<PostDTO>(`${this.apiUrl}/${subKidditId}/posts`, post);
   }
   
   // Fetches comments for a specific post with pagination
