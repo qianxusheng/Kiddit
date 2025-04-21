@@ -31,7 +31,7 @@ public class SubKidditController {
     }
 
     /**
-     * Add a new SubKiddit (community).
+     * Add a new SubKiddit (community). Testing 
      *
      * This endpoint corresponds to the "AddSubKiddit" button functionality.
      *
