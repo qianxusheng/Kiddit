@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PostService, PostDTO } from '../../services/post.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -20,7 +20,8 @@ export class SubkidditComponent implements OnInit {
 
   constructor(
     private postService: PostService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router  // Inject Router to enable navigation
   ) {}
 
   ngOnInit(): void {
@@ -45,12 +46,21 @@ export class SubkidditComponent implements OnInit {
 
   /**
    * Handles page change triggered by paginator.
-   *
-   * @param event the pagination event containing new page index and page size
+   * 
+   * @param event the pagination event containing new page index and page size.
    */
   onPageChange(event: any): void {
     this.page = event.pageIndex + 1; // Angular Material Paginator uses 0-based index
     this.pageSize = event.pageSize;
-    this.loadPosts(); // Reload posts for new page
+    this.loadPosts(); // Reload posts for new page.
+  }
+
+  /**
+   * Navigates to the "AddSubKiddit" page.
+   * Triggered when the "AddSubKiddit" button is clicked.
+   */
+  addSubKiddit(): void {
+    // Adjust the route as per your routing configuration.
+    this.router.navigate(['/add-subkiddit']);
   }
 }

@@ -2,11 +2,12 @@ package com.example.Kiddit.DataTransferObject;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
+@NoArgsConstructor  // Added so that frameworks can instantiate SubKidditDTO via reflection
 @Getter
 @Setter
 public class SubKidditDTO {

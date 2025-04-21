@@ -31,7 +31,6 @@ export interface SubKidditDTO {
 @Injectable({
   providedIn: 'root'
 })
-
 export class UserService {
   private apiUrl = 'http://localhost:8080/api'; // Base URL for API requests
 
@@ -62,6 +61,17 @@ export class UserService {
     return this.http.get<PageResponse<SubKidditDTO>>(
       `${this.apiUrl}/subkiddits/category/${categoryId}?page=${page}&size=${size}`
     );
+  }
+
+  /**
+   * Adds a new SubKiddit (community).
+   * This method calls the backend POST endpoint for creating a new SubKiddit.
+   *
+   * @param subKidditDTO the SubKiddit data to be added.
+   * @return an Observable of the created SubKidditDTO.
+   */
+  addSubKiddit(subKidditDTO: SubKidditDTO): Observable<SubKidditDTO> {
+    return this.http.post<SubKidditDTO>(`${this.apiUrl}/subkiddits`, subKidditDTO);
   }
 
   // Removes a category from a user (not used yet)
