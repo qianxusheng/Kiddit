@@ -31,7 +31,7 @@ public class SubKidditController {
     }
 
     /**
-     * Add a new SubKiddit (community). Testing 
+     * Add a new SubKiddit (community). 
      *
      * This endpoint corresponds to the "AddSubKiddit" button functionality.
      *
@@ -43,3 +43,5 @@ public class SubKidditController {
         return subKidditsService.addSubKiddit(subKidditDTO);
     }
 }
+
+/* test for git push*/
