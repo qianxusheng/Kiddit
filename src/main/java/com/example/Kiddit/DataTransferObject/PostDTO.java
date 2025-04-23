@@ -13,4 +13,5 @@ public class PostDTO {
     private String createdByFirstName;
     private String createdByLastName;
     private LocalDateTime createdAt;
+    private Long userId;
 }

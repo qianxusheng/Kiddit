@@ -3,6 +3,8 @@ package com.example.Kiddit.Service;
 import com.example.Kiddit.DataTransferObject.PostDTO;
 import com.example.Kiddit.Entity.Post;
 import com.example.Kiddit.Entity.SubKiddit;
+import com.example.Kiddit.Entity.User;
+import com.example.Kiddit.Repository.UserRepository;
 import com.example.Kiddit.Repository.PostRepository;
 import com.example.Kiddit.Repository.SubKidditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,46 @@ import org.springframework.stereotype.Service;
 public class PostService {
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private PostRepository postRepository;
 
     @Autowired
     private SubKidditRepository subKidditRepository;
+
+    /**
+     * Creates a new post in the specified SubKiddit.
+     * 
+     * @param postDTO the PostDTO containing the details of the post to be created
+     * @param subKidditId the ID of the SubKiddit where the post will be created
+     * @return the created PostDTO
+     */
+    public PostDTO createPost(Long subKidditId, PostDTO postDto) {
+        SubKiddit subKiddit = subKidditRepository.findById(subKidditId)
+                .orElseThrow(() -> new RuntimeException("SubKiddit not found with ID: " + subKidditId));
+        User user = userRepository.findByUserId(postDto.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + postDto.getUserId()));
+        Post post = new Post();
+        post.setSubject(postDto.getSubject());
+        post.setDescription(postDto.getDescription());
+        post.setSubkiddit(subKiddit);
+        post.setCreatedAt(java.time.LocalDateTime.now());
+        post.setCreatedByUser(user); // set user with ID
+    
+        Post savedPost = postRepository.save(post);
+    
+        PostDTO resultDto = new PostDTO();
+        resultDto.setPostId(savedPost.getPostId());
+        resultDto.setSubject(savedPost.getSubject());
+        resultDto.setDescription(savedPost.getDescription());
+        resultDto.setCreatedByFirstName(user.getFirstName());
+        resultDto.setCreatedByLastName(user.getLastName());
+        resultDto.setCreatedAt(savedPost.getCreatedAt());
+    
+        return resultDto;
+    }
+    
 
     /**
      * Retrieves a paginated list of posts belonging to a specific SubKiddit.
