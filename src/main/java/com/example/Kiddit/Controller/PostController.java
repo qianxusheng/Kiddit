@@ -33,8 +33,6 @@ public class PostController {
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
     }
 
-
-
     /**
      * Get a paginated list of posts under a specific SubKiddit (i.e., a community or category).
      *

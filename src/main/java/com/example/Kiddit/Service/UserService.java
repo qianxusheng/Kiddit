@@ -4,21 +4,26 @@ import com.example.Kiddit.DataTransferObject.RegisterRequestDTO;
 import com.example.Kiddit.DataTransferObject.LoginResponseDTO;
 import com.example.Kiddit.DataTransferObject.UserInfoResponseDTO;
 import com.example.Kiddit.Entity.User;
+import com.example.Kiddit.Entity.UserProfile;
 import com.example.Kiddit.Repository.UserRepository;
+import com.example.Kiddit.Repository.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserProfileRepository userProfileRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, JwtUtil jwtUtil) {
+    public UserService(UserRepository userRepository, JwtUtil jwtUtil, UserProfileRepository userProfileRepository) {
+        this.userProfileRepository = userProfileRepository;
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = new BCryptPasswordEncoder(); // You could also inject this if preferred
@@ -30,6 +35,7 @@ public class UserService {
      * @param dto the registration details of the user
      * @throws IllegalArgumentException if the email is already registered
      */
+    @Transactional
     public void registerUser(RegisterRequestDTO dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("Email is already registered");
@@ -43,6 +49,11 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         userRepository.save(user);
+
+        UserProfile newProfile = new UserProfile();
+        newProfile.setUser(user);  
+
+        userProfileRepository.save(newProfile);
     }
 
     /**

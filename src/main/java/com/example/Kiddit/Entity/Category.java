@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Getter
 @Setter
-@Table(name = "Categories")
+@Table(name = "Categories", indexes = {
+    @Index(name = "idx_subject", columnList = "subject")
+})
 public class Category {
 
     @Id

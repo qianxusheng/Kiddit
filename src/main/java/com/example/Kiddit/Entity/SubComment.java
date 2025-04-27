@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "SubComments")
+@Table(name = "SubComments", indexes = {
+    @Index(name = "idx_fk_comment_id", columnList = "fk_comment_id")
+})
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubComment {
