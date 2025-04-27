@@ -8,7 +8,6 @@ import com.example.Kiddit.Repository.UserProfileRepository;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,6 @@ public class UserProfileService {
      * @return a UserProfileDTO containing the user's profile information
      * @throws IllegalArgumentException if the profile is not found
      */
-    @Cacheable(value = "userProfiles", key = "#userId", unless = "#result == null")
     public UserProfileDTO getUserProfile(int userId) {
         UserProfile profile = userProfileRepository.findByUser_UserId(userId);
         
