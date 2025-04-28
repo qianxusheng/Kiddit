@@ -1,5 +1,7 @@
 package com.example.Kiddit.Entity;
 
+// import org.springframework.data.redis.core.RedisHash;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "UserProfiles")
+// @RedisHash("UserProfiles")   // redis small use test
 public class UserProfile {
     
     @Id
@@ -19,9 +22,10 @@ public class UserProfile {
     @JoinColumn(name = "fk_user_id", nullable = false)
     private User user;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(columnDefinition = "TEXT")
     private String bio;
 
-    @Column(name = "avatar_url", length = 255, nullable = false)
-    private String avatarUrl;
+    @OneToOne
+    @JoinColumn(name = "avatar_id")
+    private Avatar avatar;
 }

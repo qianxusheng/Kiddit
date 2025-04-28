@@ -28,7 +28,7 @@ public class UserController {
      * @param registerRequestDTO the registration details including user information
      * @return ResponseEntity with a CREATED status if registration is successful, or BAD_REQUEST if there's an issue
      */
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<Void> registerUser(@RequestBody RegisterRequestDTO registerRequestDTO) {
         try {
             userService.registerUser(registerRequestDTO);
@@ -44,7 +44,7 @@ public class UserController {
      * @param credentials a map containing the user's email and password
      * @return ResponseEntity with a LoginResponseDTO on successful login, or UNAUTHORIZED status if credentials are invalid
      */
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody Map<String, String> credentials) {
         try {
             String email = credentials.get("email");

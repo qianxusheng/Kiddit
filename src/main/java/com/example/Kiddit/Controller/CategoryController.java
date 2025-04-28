@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Collections;
+import java.util.HashMap;
+
 import org.springframework.data.domain.Page;
 
 @RestController
@@ -78,13 +80,12 @@ public class CategoryController {
      *
      * @return list of all categories
      */
-    @GetMapping("/profile/categories")
+    @GetMapping("/categories")
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);
     }
 
-    // didn't use yet.
     /**
      * Add or update categories that a user is interested in.
      * Accepts a JSON body with a list of category IDs.
@@ -94,19 +95,15 @@ public class CategoryController {
      * @return success or error message
      */
     @PutMapping("/profile/{userId}/categories")
-    public ResponseEntity<String> addUserCategories(@PathVariable int userId, @RequestBody Map<String, List<Integer>> categoryIdsMap) {
-        try {
-            List<Integer> categoryIds = categoryIdsMap.get("categoryIds");
-            if (categoryIds == null || categoryIds.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No categories selected.");
-            }
-            categoryService.addUserCategories(userId, categoryIds);
-    
-            return ResponseEntity.ok("User categories updated successfully");
-    
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<Map<String, String>> addUserCategories(@PathVariable int userId, @RequestBody Map<String, List<Integer>> categoryIdsMap) {
+        List<Integer> categoryIds = categoryIdsMap.get("categoryIds");
+        
+        categoryService.addUserCategories(userId, categoryIds);
+        
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User categories updated successfully");
+        
+        return ResponseEntity.ok(response);
     }
 
     /**

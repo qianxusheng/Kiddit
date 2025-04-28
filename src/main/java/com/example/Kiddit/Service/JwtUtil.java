@@ -1,91 +1,84 @@
 package com.example.Kiddit.Service;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.security.Key;
+import java.util.Date;
 
 @Service
 public class JwtUtil {
 
-    private Key secretKey;
+    private final Key secretKey;
+    private static final long EXPIRATION_TIME = 1000 * 36 * 36 * 24; // 1 day
 
-    public JwtUtil() {
-        try {
-            // Generate a secret key for signing JWT tokens using HMACSHA256 algorithm
-            javax.crypto.KeyGenerator keyGenerator = javax.crypto.KeyGenerator.getInstance("HmacSHA256");
-            keyGenerator.init(256); // Set key size
-            this.secretKey = keyGenerator.generateKey();
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to generate secret key", e);
-        }
+    public JwtUtil(@Value("${jwt.secret}") String secret) {
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     /**
      * Generates a JWT token for the user with the given details.
-     * 
+     *
      * @param userId the ID of the user
      * @param firstName the user's first name
      * @param lastName the user's last name
      * @return the generated JWT token
      */
     public String generateToken(Long userId, String firstName, String lastName) {
-        long expirationTime = 60 * 60 * 1000; // 1 hour expiration
-
         return Jwts.builder()
-                .claim("sub", String.valueOf(userId)) // User ID claim
-                .claim("firstName", firstName) // User first name claim
-                .claim("lastName", lastName) // User last name claim
-                .setIssuedAt(new Date()) // Token issue time
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) // Token expiration time
-                .signWith(secretKey) // Sign the token with the secret key
+                .setSubject(String.valueOf(userId))
+                .claim("firstName", firstName)
+                .claim("lastName", lastName)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     /**
-     * Extracts the claims from the given JWT token.
-     * 
+     * Extracts all claims from the JWT token.
+     *
      * @param token the JWT token
-     * @return the claims in the token
+     * @return the claims
      */
     public Claims extractClaims(String token) {
         return Jwts.parser()
-                .setSigningKey(secretKey) // Set the secret key for validation
+                .setSigningKey(secretKey)
                 .build()
-                .parseClaimsJws(token) // Parse the token
-                .getPayload(); // Return the claims
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     /**
-     * Extracts the user ID from the given JWT token.
-     * 
+     * Extracts the user ID (subject) from the JWT token.
+     *
      * @param token the JWT token
-     * @return the user ID contained in the token
+     * @return the user ID
      */
     public Long extractUserId(String token) {
-        return Long.parseLong(extractClaims(token).getSubject()); // Get user ID from the subject claim
+        return Long.parseLong(extractClaims(token).getSubject());
     }
 
     /**
-     * Checks if the given JWT token has expired.
-     * 
+     * Checks if the token is expired.
+     *
      * @param token the JWT token
-     * @return true if the token is expired, false otherwise
+     * @return true if expired, false otherwise
      */
     public boolean isTokenExpired(String token) {
-        return extractClaims(token).getExpiration().before(new Date()); // Check if the expiration date is in the past
+        return extractClaims(token).getExpiration().before(new Date());
     }
 
     /**
-     * Validates the given JWT token by checking the user ID and expiration date.
-     * 
+     * Validates the token by checking the user ID and expiration.
+     *
      * @param token the JWT token
      * @param userId the expected user ID
-     * @return true if the token is valid, false otherwise
+     * @return true if valid, false otherwise
      */
     public boolean validateToken(String token, Long userId) {
-        return (userId.equals(extractUserId(token)) && !isTokenExpired(token)); // Validate token based on user ID and expiration
+        return userId.equals(extractUserId(token)) && !isTokenExpired(token);
     }
 }

@@ -1,6 +1,10 @@
 <div class="subkiddit-container">
-  <!-- Create Post Button -->
-  <div style="margin-bottom: 1rem; text-align: right;">
+  <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 1rem;">
+    <!-- Back Button -->
+    <button mat-raised-button color="warn" (click)="goBack()">
+      Back
+    </button>
+    <!-- Create Post Button -->
     <button mat-raised-button color="primary" (click)="showCreatePostForm = !showCreatePostForm">
       {{ showCreatePostForm ? 'Cancel' : 'Create Post' }}
     </button>
@@ -26,16 +30,30 @@
       </div>
     </form>
   </div>
-
+  
   <!-- Post List -->
-  <div *ngFor="let post of posts" class="subkiddit-btn-container" [routerLink]="['/post', post.postId]">
-    <h4>{{ post.subject }}</h4>
-    <p>{{ post.description }}</p>
-    <small>
-      Created by {{ post.createdByFirstName }} {{ post.createdByLastName }} at {{ post.createdAt }}
-    </small>
-  </div>
-</div>
+  <div *ngFor="let post of posts" class="subkiddit-btn-container" [routerLink]="['/post', post.postId]" (click)="onPostClick($event)">
+    <div class="post">
+      <h3>{{ post.subject }}</h3>
+      <p>{{ post.description }}</p>
+      <div class="vote-buttons">
+        <!-- Upvote button -->
+        <button 
+          mat-button 
+          (click)="upvotePost(post);$event.stopPropagation()"
+          [ngClass]="{'upvoted': post.userVoteStatus === VoteType.UP}">
+          Upvote ({{ post.upvotes }})
+        </button>
+        <!-- Downvote button -->
+        <button 
+          mat-button 
+          (click)="downvotePost(post);$event.stopPropagation()"
+          [ngClass]="{'downvoted': post.userVoteStatus === VoteType.DOWN}">
+          Downvote ({{ post.downvotes }})
+        </button>
+      </div>
+    </div>
+  </div>  
 
 <!-- Paginator -->
 <mat-paginator [length]="totalPosts"

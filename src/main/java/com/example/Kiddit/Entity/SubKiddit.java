@@ -8,7 +8,10 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Subkiddits")
+@Table(name = "Subkiddits", indexes = {
+    @Index(name = "idx_fk_category_id", columnList = "fk_category_id"),
+    @Index(name = "idx_fk_created_by_user_id", columnList = "fk_created_by_user_id")
+})
 @Getter
 @Setter
 @NoArgsConstructor

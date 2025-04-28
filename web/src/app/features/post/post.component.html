@@ -1,57 +1,96 @@
-<!-- Post Header -->
-<div class="post-wrapper" *ngIf="post">
-  <div class="post-header">
-    <h2 class="post-title">{{ post.subject }}</h2>
-    <p class="post-meta">
-      Posted by: <strong>{{ post.createdByFirstName }} {{ post.createdByLastName }}</strong>
-      | {{ post.createdAt | date:'medium' }}
-    </p>
+<div class="post-container">
+  <!-- Back Button -->
+  <div class="back-button-container">
+    <button mat-raised-button color="warn" (click)="goBack()">
+      Back
+    </button>
   </div>
 
-  <div class="post-body">
-    <p class="post-description">{{ post.description }}</p>
+  <!-- Post Header -->
+  <div class="post-wrapper" *ngIf="post">
+    <div class="post-header">
+      <h2 class="post-title">{{ post.subject }}</h2>
+      <p class="post-meta">
+        Posted by: <strong>{{ post.createdByFirstName }} {{ post.createdByLastName }}</strong>
+        | {{ post.createdAt | date:'medium' }}
+      </p>
+    </div>
+
+    <div class="post-body">
+      <p class="post-description">{{ post.description }}</p>
+    </div>
   </div>
-</div>
 
-<hr>
+  <hr>
 
-<!-- Comments Section -->
-<div class="comments-section">
-  <h3 class="comment-header">All Comments</h3>
-
-  <div *ngFor="let comment of comments" class="comment-card">
-    <div class="comment-user">
-      <strong>{{ comment.createdByFirstName }} {{ comment.createdByLastName }}</strong>
-      <span class="comment-time">{{ comment.createdAt | date:'short' }}</span>
+  <!-- Add Comment Section -->
+  <div class="add-comment-section">
+    <textarea [(ngModel)]="commentContent" placeholder="Add a comment..." rows="3" class="comment-textarea"></textarea>
+    <div class="comment-button-container">
+      <button mat-raised-button color="primary" (click)="onAddComment()" class="comment-button">Reply</button>
     </div>
-    <div class="comment-content">
-      {{ comment.content }}
-    </div>
+  </div>
 
-    <!-- Sub-comments Section -->
-    <div *ngIf="getSubComments(comment.commentId).length > 0">
-      <div *ngFor="let subComment of getSubComments(comment.commentId)" class="subcomment-card">
-        <div class="subcomment-user">
-          <strong>{{ subComment.createdByFirstName }} {{ subComment.createdByLastName }}</strong>
-          <span class="subcomment-time">{{ subComment.createdAt | date:'short' }}</span>
-        </div>
-        <div class="subcomment-content">
-          {{ subComment.content }}
-        </div>
+  <!-- Comments Section -->
+  <div class="comments-section">
+    <h3 class="comment-header">All Comments</h3>
+
+    <div *ngFor="let comment of comments" class="comment-card">
+      <div class="comment-header">
+        <strong>{{ comment.createdByFirstName }} {{ comment.createdByLastName }}</strong>
+        <span class="comment-time">{{ comment.createdAt | date:'short' }}</span>
       </div>
 
-      <!-- Show Load More Button if there are more sub-comments -->
-      <button *ngIf="canLoadMoreSubComments(comment.commentId)" (click)="onLoadMoreSubComments(comment.commentId)">
-        Load More Sub-comments
+      <div class="comment-body">
+        <p>{{ comment.content }}</p>
+      </div>
+
+    <!-- Vote Button Section -->
+    <div class="vote-buttons">
+      <!-- Add Subcomment Button (Left side) -->
+      <button mat-button (click)="toggleSubCommentInput(comment.commentId)" class="add-subcomment-btn">
+        <mat-icon>add_comment</mat-icon> Reply
+      </button>
+
+      <!-- Vote Buttons (Right side) -->
+      <div class="vote-buttons-right">
+        <button mat-button (click)="upvoteComment(comment)" [ngClass]="{'upvoted': comment.userVoteStatus === VoteType.UP}">
+          <mat-icon>thumb_up</mat-icon> Upvote ({{ comment.upvotes }})
+        </button>
+        <button mat-button (click)="downvoteComment(comment)" [ngClass]="{'downvoted': comment.userVoteStatus === VoteType.DOWN}">
+          <mat-icon>thumb_down</mat-icon> Downvote ({{ comment.downvotes }})
+        </button>
+      </div>
+    </div>
+
+    <!-- Sub-comment Input -->
+    <div *ngIf="showSubCommentInput[comment.commentId]" class="add-comment-section">
+      <textarea [(ngModel)]="subCommentContent" placeholder="Write a reply..." rows="3" class="subcomment-textarea"></textarea>
+      <button mat-raised-button color="primary" (click)="onAddSubComment(comment.commentId)" class="comment-button">
+        Submit
       </button>
     </div>
-  </div>
+      <!-- Sub-comments Section -->
+      <div *ngIf="getSubComments(comment.commentId).length > 0" class="subcomments-container">
+        <div *ngFor="let subComment of getSubComments(comment.commentId)" class="subcomment-card">
+          <div class="subcomment-header">
+            <strong>{{ subComment.createdByFirstName }} {{ subComment.createdByLastName }}</strong>
+            <span class="subcomment-time">{{ subComment.createdAt | date:'short' }}</span>
+          </div>
+          <div class="subcomment-body">
+            <p>{{ subComment.content }}</p>
+          </div>
+        </div>
 
-  <!-- Pagination for Comments -->
-  <mat-paginator
-    [length]="totalComments"
-    [pageSize]="pageSize"
-    [pageSizeOptions]="[5, 10, 20]"
-    (page)="onPageChange($event)">
-  </mat-paginator>
+        <!-- Show Load More Button if there are more sub-comments -->
+        <button *ngIf="canLoadMoreSubComments(comment.commentId)" (click)="onLoadMoreSubComments(comment.commentId)" class="load-more-btn">
+          Load More Sub-comments
+        </button>
+      </div>
+    </div>
+
+    <!-- Pagination for Comments -->
+    <mat-paginator [length]="totalComments" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
 </div>

@@ -1,42 +1,128 @@
 <!-- User Profile Section -->
 <div class="profile-container" *ngIf="userProfile; else loading">
-  <h2 class="profile-title">User Profile</h2>
+  <div class="profile-card">
+    <h2 class="profile-title">User Profile</h2>
 
-  <div class="profile-content">
-    <!-- Avatar Section -->
-    <div class="avatar-section">
-      <img *ngIf="userProfile.avatarUrl" [src]="userProfile.avatarUrl" alt="User Avatar" />
-    </div>
+    <div class="profile-content">
+      <!-- Avatar Section -->
+      <div class="avatar-section">
+        <div class="avatar-wrapper">
+          <img [src]="avatarUrl" alt="User Avatar" class="user-avatar" />
+          <div class="avatar-overlay" (click)="triggerFileSelect()">
+            <mat-icon>camera_alt</mat-icon>
+          </div>
+        </div>
+        <input type="file" #fileInput hidden (change)="onAvatarSelected($event)" />
+        <button class="upload-avatar-btn" (click)="triggerFileSelect()">Change Avatar</button>
+      </div>
 
-    <!-- Bio Section -->
-    <div class="bio-section">
-      <p><strong>Bio:</strong></p>
-      <p>{{ userProfile.bio }}</p>
+      <!-- Bio Section -->
+      <div class="bio-section">
+        <h3>About Me</h3>
+        <div *ngIf="!isEditing" class="bio-display">
+          <p>{{ userProfile.bio || "No bio yet. Click edit to add one." }}</p>
+        </div>
+
+        <div *ngIf="isEditing" class="bio-edit">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Your Bio</mat-label>
+            <textarea matInput id="bio" [(ngModel)]="updatedUserBio" rows="4"></textarea>
+          </mat-form-field>
+          <div class="edit-actions">
+            <button mat-button (click)="isEditing = false" class="cancel-btn">Cancel</button>
+            <button mat-raised-button color="primary" (click)="updateUserBio()" class="save-btn">Save Changes</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Button Outside Bio Section -->
+      <div class="edit-btn-container">
+        <button mat-icon-button (click)="isEditing = true" class="edit-btn" matTooltip="Edit Bio">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Loading State Template -->
 <ng-template #loading>
-  <p class="loading-text">Loading user profile...</p>
+  <div class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p class="loading-text">Loading user profile...</p>
+  </div>
+</ng-template>
+
+<!-- Recent Comments Section -->
+<div class="section-container" *ngIf="recentComments.length > 0; else noComments">
+  <div class="section-card">
+    <h2 class="section-title">
+      <mat-icon class="section-icon">comment</mat-icon>
+      Your Recent Comments
+    </h2>
+
+    <div class="comments-grid">
+      <div *ngFor="let comment of recentComments" class="comment-card">
+        <div class="comment-content">
+          <p class="comment-text">{{ comment.content }}</p>
+        </div>
+        <div class="comment-meta">
+          <div class="meta-item">
+            <mat-icon>article</mat-icon>
+            <span>{{ comment.postSubject }}</span>
+          </div>
+          <div class="meta-item">
+            <mat-icon>schedule</mat-icon>
+            <span>Commented on {{ comment.createdAt | date:'mediumDate' }}</span>
+          </div>
+          <div class="meta-item">
+            <mat-icon>calendar_today</mat-icon>
+            <span>Post created {{ comment.postCreatedAt | date:'mediumDate' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noComments>
+  <div class="empty-state">
+    <mat-icon>forum</mat-icon>
+    <p>No recent comments to display.</p>
+  </div>
 </ng-template>
 
 <!-- Favorite Categories Section -->
-<div class="category-section">
-  <h2 class="section-title">Your Favorite Categories</h2>
+<div class="section-container">
+  <div class="section-card">
+    <div class="section-header">
+      <h2 class="section-title">
+        <mat-icon class="section-icon">category</mat-icon>
+        Your Favorite Categories
+      </h2>
+      <button mat-raised-button color="primary" (click)="openAddCategoryDialog()" class="add-category-btn">
+        <mat-icon>add</mat-icon> Add Category
+      </button>
+    </div>
 
-  <div class="category-container">
-    <!-- Loop through user's selected categories -->
-    <div *ngFor="let category of categories" class="category-box">
-      <span class="category-name">{{ category.subject }}</span>
-
-      <!-- Delete button to remove category -->
-      <button (click)="removeCategory(category.categoryId)" class="delete-btn">×</button>
+    <div class="categories-container">
+      <div *ngFor="let category of userCategories" class="category-chip">
+        <span>{{ category.subject }}</span>
+        <button mat-icon-button (click)="removeCategory(category.categoryId)" class="delete-btn">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      
+      <div *ngIf="userCategories.length === 0" class="empty-categories">
+        <p>No favorite categories yet. Add some to personalize your experience!</p>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Return Home Button -->
-<div class="return-home-wrapper">
-  <button class="return-home-btn" (click)="returnHome()">return</button>
+<div class="action-container">
+  <button mat-raised-button (click)="returnHome()" class="return-home-btn">
+    <mat-icon>home</mat-icon> Return Home
+  </button>
 </div>
