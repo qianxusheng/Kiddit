@@ -82,9 +82,9 @@ The backend uses a MySQL database, and the connection settings are specified in 
 ```properties
 spring.application.name=Kiddit
 
-spring.datasource.url=jdbc:mysql://159.65.239.201:3306/xuq8?useSSL=false&serverTimezone=UTC
-spring.datasource.username=xuq8
-spring.datasource.password=infsci2710_4814315
+spring.datasource.url=**********************
+spring.datasource.username=**********************
+spring.datasource.password=**********************
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
