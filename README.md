@@ -158,3 +158,6 @@ If you want to contribute to Kiddit, please fork this project and submit a Pull 
 
 ### 10. License
 This project follows the **MIT license**. Please refer to the LICENSE file for details.
+
+### 11.Sphinx Cat for stars
+![007a79a607aed97e502d5c9266ebbee](https://github.com/user-attachments/assets/740c25d4-7f91-4d22-88a6-f837e8cbb3b1)
