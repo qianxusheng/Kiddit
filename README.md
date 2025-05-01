@@ -1,4 +1,6 @@
 # Kiddit - Social Networking Website
+## Notice
+Please use your own database and ChatGPT API in the **application.properties** file (backend).
 
 ## Project Overview
 Kiddit is a social networking website designed for children to help them learn about different cultures, develop good internet etiquette, and reduce online hate speech. This project is developed using **Angular** (frontend) and **Spring Boot** (backend).
