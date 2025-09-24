@@ -1,0 +1,34 @@
+<div class="category-container">
+  <!-- Loop through categories -->
+  <div *ngFor="let category of categories" class="category-card">
+    <!-- Display category title and description -->
+    <h3 class="category-title">{{ category.subject }}</h3>
+    <p class="category-description">{{ category.description }}</p>
+
+    <!-- Loop through SubKiddits of the current category -->
+    <div class="subkiddit-container">
+      <div *ngFor="let subKiddit of filteredSubKiddits[category.categoryId]" class="subkiddit-card"
+           [routerLink]="['/subkiddit', subKiddit.subkidditId]" class="subkiddit-btn-container">
+        <!-- Display SubKiddit title, description, and creator info -->
+        <h4>{{ subKiddit.subject }}</h4>
+        <p>{{ subKiddit.description }}</p>
+        <small>Created by {{ subKiddit.createdByFirstName }} {{ subKiddit.createdByLastName }} at {{ subKiddit.createdAt }}</small>
+      </div>
+    </div>
+
+    <!-- Pagination for SubKiddits if any -->
+    <mat-paginator *ngIf="totalItemsSubKiddit[category.categoryId] > 0"
+                   [length]="totalItemsSubKiddit[category.categoryId]"
+                   [pageSize]="itemsPerPageSubKiddit"
+                   [pageIndex]="pSubKiddit[category.categoryId] - 1"
+                   (page)="subKidditPageChanged($event, category.categoryId)">
+    </mat-paginator>
+  </div>
+</div>
+
+<!-- Pagination for categories -->
+<mat-paginator [length]="totalItemsCategory"
+               [pageSize]="itemsPerPageCategory"
+               [pageIndex]="pCategory - 1"
+               (page)="categoryPageChanged($event)">
+</mat-paginator>

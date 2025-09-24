@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    container_name: kiddit-backend
+
+  frontend:
+    build: ./web
+    ports:
+      - "4200:4200"
+    container_name: kiddit-frontend
+    depends_on:
+      - backend

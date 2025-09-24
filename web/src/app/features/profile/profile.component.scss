@@ -1,0 +1,132 @@
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+  text-align: center;
+}
+
+.profile-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.profile-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  text-align: left;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 24px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.avatar-section img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
+.bio-section {
+  max-width: 500px;
+  font-size: 1rem;
+  color: #444;
+}
+
+.loading-text {
+  text-align: center;
+  margin-top: 50px;
+  color: #999;
+}
+
+/* ---- Category Section Unified with Profile ---- */
+
+.category-section {
+  margin: 32px auto;
+  padding: 24px;
+  max-width: 800px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: 600;
+  text-align: left;
+}
+
+.category-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.category-box {
+  position: relative;
+  background-color: #e0f2fe;
+  padding: 10px 16px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  color: #0369a1;
+  font-weight: 500;
+  transition: transform 0.2s ease;
+}
+
+.category-box:hover {
+  transform: scale(1.05);
+}
+
+.category-name {
+  margin-right: 12px;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 1.2rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.delete-btn:hover {
+  color: #b91c1c;
+}
+
+/* ---- return button ---- */
+.return-home-wrapper {
+  width: 100%;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+.return-home-btn {
+  background-color: #684caf;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.return-home-btn:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}

@@ -1,0 +1,25 @@
+<div class="subkiddit-container">
+  <!-- Loops through each post in the posts array -->
+  <div *ngFor="let post of posts" class="subkiddit-btn-container"
+    [routerLink]="['/post', post.postId]">
+    
+    <!-- Displays the post subject -->
+    <h4>{{ post.subject }}</h4>
+
+    <!-- Displays the post description -->
+    <p>{{ post.description }}</p>
+
+    <!-- Displays who created the post and when -->
+    <small>
+      Created by {{ post.createdByFirstName }} {{ post.createdByLastName }} 
+      at {{ post.createdAt }}
+    </small>
+  </div>
+</div>
+
+<!-- Angular Material paginator for navigating through pages of posts -->
+<mat-paginator [length]="totalPosts"
+               [pageSize]="pageSize"
+               [pageIndex]="page - 1"
+               (page)="onPageChange($event)">
+</mat-paginator>

@@ -1,0 +1,44 @@
+/* subkiddit.component.scss */
+.subkiddit-container {
+    display: flex;
+    flex-direction: column; /* Ensures vertical alignment */
+    gap: 16px;  /* Space between cards */
+    justify-content: flex-start; /* Align to the top */
+    margin: 20px auto; /* Center the container */
+    width: 80%; /* Adjust width */
+  }
+  
+  .subkiddit-btn-container {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    width: 100%; /* Make each post take full width */
+  }
+  
+  .subkiddit-btn-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .subkiddit-btn-container h4 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .subkiddit-btn-container p {
+    margin: 8px 0;
+    font-size: 1rem;
+  }
+  
+  .subkiddit-btn-container small {
+    font-size: 0.85rem;
+    color: #999;
+  }
+  

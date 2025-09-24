@@ -1,0 +1,138 @@
+<div class="login-page">
+  <!-- Blue Bar -->
+  <div class="blue-bar">
+    <h1>The University of Pitt</h1>
+  </div>
+
+  <!-- Yellow Bar -->
+  <div class="yellow-bar">
+    <h2>Kiddit Passport</h2>
+  </div>
+
+  <!-- Login Form Section -->
+  <div class="login-container">
+    <div class="login-box">
+      <h2>{{ isLogin ? 'Login' : 'Register' }}</h2>
+
+      <!-- Login Form -->
+      <form [formGroup]="loginForm" *ngIf="isLogin" (ngSubmit)="onLoginSubmit()">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            required
+            class="form-control"
+          />
+          <div *ngIf="loginForm.controls['email'].invalid && loginForm.controls['email'].touched" class="error">
+            Please enter a valid email.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            required
+            class="form-control"
+          />
+          <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched" class="error">
+            Password is required.
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
+      </form>
+
+      <!-- Register Form -->
+      <form [formGroup]="registerForm" *ngIf="!isLogin" (ngSubmit)="onRegisterSubmit()">
+        <div class="form-group">
+          <label for="registerEmail">Email</label>
+          <input
+            type="email"
+            id="registerEmail"
+            formControlName="email"
+            required
+            class="form-control"
+          />
+          <div *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched" class="error">
+            Please enter a valid email.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="registerPassword">Password</label>
+          <input
+            type="password"
+            id="registerPassword"
+            formControlName="password"
+            required
+            class="form-control"
+          />
+          <div *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched" class="error">
+            Password is required.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="nickName">Nickname</label>
+          <input
+            type="text"
+            id="nickName"
+            formControlName="nickName"
+            required
+            class="form-control"
+          />
+          <div *ngIf="registerForm.controls['nickName'].invalid && registerForm.controls['nickName'].touched" class="error">
+            Nickname is required.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            id="firstName"
+            formControlName="firstName"
+            required
+            class="form-control"
+          />
+          <div *ngIf="registerForm.controls['firstName'].invalid && registerForm.controls['firstName'].touched" class="error">
+            First name is required.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            formControlName="lastName"
+            required
+            class="form-control"
+          />
+          <div *ngIf="registerForm.controls['lastName'].invalid && registerForm.controls['lastName'].touched" class="error">
+            Last name is required.
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-success" [disabled]="registerForm.invalid">Register</button>
+      </form>
+
+      <!-- Switch Between Login and Register Forms -->
+      <div class="switch">
+        <button (click)="toggleForm()">
+          {{ isLogin ? 'Switch to Register' : 'Switch to Login' }}
+        </button>
+      </div>
+
+      <!-- Error Message Display -->
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+    </div>
+  </div>
+</div>

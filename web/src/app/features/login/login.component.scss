@@ -1,0 +1,122 @@
+.login-page {
+  font-family: 'Arial', sans-serif;
+
+  // blue bar, mimic the PITT canvas login page
+  .blue-bar {
+    background-color: #003594;
+    color: #fff;
+    padding: 50px 0;
+    text-align: center;
+    border-bottom: 2px solid #927b38;
+
+    h1 {
+      font-size: 32px;
+      margin: 0;
+    }
+  }
+
+  // mimic the PITT canvas login page
+  .yellow-bar {
+    background-color: #FFB81C;
+    color: #003865;
+    padding: 30px 0;
+    text-align: center;
+
+    h2 {
+      font-size: 24px;
+      margin: 0;
+    }
+  }
+
+  // outside architecture
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+  }
+
+  // inside content, it's a box.
+  .login-box {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 400px;
+    text-align: center;
+
+    h2 {
+      margin-bottom: 30px;
+      font-size: 28px;
+      color: #003865;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+
+      label {
+        font-size: 16px;
+        color: #003865;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+
+      .error {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+      }
+    }
+
+    // button
+    .btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &.btn-primary {
+        background-color: #003865;
+      }
+
+      &.btn-success {
+        background-color: #f2b100;
+      }
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+
+    .switch {
+      margin-top: 20px;
+
+      button {
+        background-color: transparent;
+        border: none;
+        color: #003865;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    }
+
+    .error-message {
+      margin-top: 15px;
+      color: red;
+      font-size: 16px;
+    }
+  }
+}
