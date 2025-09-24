@@ -1,0 +1,23 @@
+<h2 class="dialog-title">Add Categories</h2>
+
+<div class="category-list">
+  <div *ngIf="availableCategories.length === 0" class="empty-text">
+    You already have all categories 🎉
+  </div>
+
+  <div
+    *ngFor="let category of availableCategories"
+    class="category-item"
+    [class.selected]="selectedCategoryIds.includes(category.categoryId)"
+    (click)="toggleSelection(category.categoryId)"
+  >
+    {{ category.subject }}
+  </div>
+</div>
+
+<div class="dialog-actions">
+  <button class="cancel-btn" (click)="cancel()">Cancel</button>
+  <button class="confirm-btn" [disabled]="selectedCategoryIds.length === 0" (click)="confirmSelection()">
+    Add Selected
+  </button>
+</div>

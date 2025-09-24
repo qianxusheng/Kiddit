@@ -1,7 +1,6 @@
-<<<<<<< HEAD
-# Kiddit
-=======
 # Kiddit - Social Networking Website
+## Notice
+Please use your own database and ChatGPT API in the **application.properties** file (backend).
 
 ## Project Overview
 Kiddit is a social networking website designed for children to help them learn about different cultures, develop good internet etiquette, and reduce online hate speech. This project is developed using **Angular** (frontend) and **Spring Boot** (backend).
@@ -85,9 +84,9 @@ The backend uses a MySQL database, and the connection settings are specified in 
 ```properties
 spring.application.name=Kiddit
 
-spring.datasource.url=jdbc:mysql://159.65.239.201:3306/xuq8?useSSL=false&serverTimezone=UTC
-spring.datasource.username=xuq8
-spring.datasource.password=infsci2710_4814315
+spring.datasource.url=**********************
+spring.datasource.username=**********************
+spring.datasource.password=**********************
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
@@ -159,4 +158,8 @@ If you want to contribute to Kiddit, please fork this project and submit a Pull 
 
 ### 10. License
 This project follows the **MIT license**. Please refer to the LICENSE file for details.
+<<<<<<< HEAD
 >>>>>>> main
+=======
+
+>>>>>>> main/main

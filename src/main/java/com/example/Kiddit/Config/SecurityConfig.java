@@ -8,6 +8,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.http.HttpMethod;
 import com.example.Kiddit.Service.JwtFilter;
 
 @Configuration
@@ -24,7 +25,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())  
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/**").permitAll()  // Allow public endpoints like login and register
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/api/users/auth/login", "/api/users/auth/register", "/api/test-gpt").permitAll()  // Allow public endpoints like login and register
                 .anyRequest().authenticated()  // Protect other endpoints
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // Add JWT filter before the default filter

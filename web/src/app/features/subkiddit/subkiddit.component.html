@@ -1,23 +1,61 @@
 <div class="subkiddit-container">
-  <!-- Loops through each post in the posts array -->
-  <div *ngFor="let post of posts" class="subkiddit-btn-container"
-    [routerLink]="['/post', post.postId]">
-    
-    <!-- Displays the post subject -->
-    <h4>{{ post.subject }}</h4>
-
-    <!-- Displays the post description -->
-    <p>{{ post.description }}</p>
-
-    <!-- Displays who created the post and when -->
-    <small>
-      Created by {{ post.createdByFirstName }} {{ post.createdByLastName }} 
-      at {{ post.createdAt }}
-    </small>
+  <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 1rem;">
+    <!-- Back Button -->
+    <button mat-raised-button color="warn" (click)="goBack()">
+      Back
+    </button>
+    <!-- Create Post Button -->
+    <button mat-raised-button color="primary" (click)="showCreatePostForm = !showCreatePostForm">
+      {{ showCreatePostForm ? 'Cancel' : 'Create Post' }}
+    </button>
   </div>
-</div>
 
-<!-- Angular Material paginator for navigating through pages of posts -->
+  <!-- Create Post Form -->
+  <div *ngIf="showCreatePostForm" class="create-post-form" style="margin-bottom: 2rem;">
+    <form (ngSubmit)="createPost()" class="post-form" style="max-width: 600px; margin: 0 auto;">
+      <mat-form-field appearance="outline" class="full-width" style="width: 100%;">
+        <mat-label>Subject</mat-label>
+        <input matInput [(ngModel)]="newPost.subject" name="subject" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width" style="width: 100%;">
+        <mat-label>Description</mat-label>
+        <textarea matInput rows="4" [(ngModel)]="newPost.description" name="description" required></textarea>
+      </mat-form-field>
+
+      <div style="text-align: right;">
+        <button mat-raised-button color="accent" type="submit" [disabled]="isCreatingPost">
+          {{ isCreatingPost ? 'Posting...' : 'Submit Post' }}
+        </button>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Post List -->
+  <div *ngFor="let post of posts" class="subkiddit-btn-container" [routerLink]="['/post', post.postId]" (click)="onPostClick($event)">
+    <div class="post">
+      <h3>{{ post.subject }}</h3>
+      <p>{{ post.description }}</p>
+      <div class="vote-buttons">
+        <!-- Upvote button -->
+        <button 
+          mat-button 
+          (click)="upvotePost(post);$event.stopPropagation()"
+          [ngClass]="{'upvoted': post.userVoteStatus === VoteType.UP}">
+          Upvote ({{ post.upvotes }})
+        </button>
+        <!-- Downvote button -->
+        <button 
+          mat-button 
+          (click)="downvotePost(post);$event.stopPropagation()"
+          [ngClass]="{'downvoted': post.userVoteStatus === VoteType.DOWN}">
+          Downvote ({{ post.downvotes }})
+        </button>
+      </div>
+    </div>
+  </div>  
+
+<!-- Paginator -->
 <mat-paginator [length]="totalPosts"
                [pageSize]="pageSize"
                [pageIndex]="page - 1"

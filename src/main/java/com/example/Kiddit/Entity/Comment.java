@@ -6,7 +6,11 @@
     import java.time.LocalDateTime;
 
     @Entity
-    @Table(name = "Comments")
+    @Table(name = "Comments", indexes = {
+        @Index(name = "idx_post_id", columnList = "fk_post_id")
+        // @Index(name = "idx_created_at", columnList = "created_at"), -- Not used at this moment
+        // @Index(name = "idx_created_by_user_id", columnList = "fk_created_by_user_id")
+    })
     @Getter
     @Setter
     @NoArgsConstructor

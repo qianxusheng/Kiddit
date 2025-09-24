@@ -1,6 +1,7 @@
 import { Component, ChangeDetectorRef, OnDestroy  } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthService, UserInfo } from './services/auth.service';
+import { UserService, UserInfo } from './services/user.service';
+import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
@@ -23,31 +24,32 @@ export class AppComponent implements OnInit, OnDestroy {
   isLoginPage = false;
   private routerSubscription!: Subscription;
 
-  constructor(private authService: AuthService,
+  constructor(private userService: UserService,
+              private authService: AuthService,
               private router: Router,
               private cdr: ChangeDetectorRef) {}
 
-  ngOnInit() {
-    this.router.events.subscribe(() => {
-      this.showToolbar = this.router.url !== '/login'; 
-      this.isLoginPage = this.router.url == '/login'; 
-    });
+    ngOnInit() {
+      this.router.events.subscribe(() => {
+        this.showToolbar = this.router.url !== '/login'; 
+        this.isLoginPage = this.router.url == '/login'; 
+      });
 
-    this.userId = Number(localStorage.getItem('userId'));
-    if (this.userId) {
-      this.authService.getUserInfo(this.userId).subscribe(
-        (userInfo) => {
-          this.userInfo = userInfo;
-          this.cdr.detectChanges();
-        },
-        (error) => {
-          console.error('Error fetching user info:', error);
-        }
-      );
-    } else {
-      console.error('User ID not found in localStorage');
+      this.userId = Number(localStorage.getItem('userId'));
+      if (this.userId) {
+        this.userService.getUserInfo(this.userId).subscribe(
+          (userInfo) => {
+            this.userInfo = userInfo;
+            this.cdr.detectChanges();
+          },
+          (error) => {
+            console.error('Error fetching user info:', error);
+          }
+        );
+      } else {
+        console.error('User ID not found in localStorage');
+      }
     }
-  }
 
   onLogout() {
     this.authService.logout();
