@@ -1,0 +1,44 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'web/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'web/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./web
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: './web/package-lock.json'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run tests
+      run: npm run test -- --watch=false --browsers=ChromeHeadless
+
+    - name: Build application
+      run: npm run build
+
+    - name: Build Docker image
+      run: docker build -t kiddit-frontend:${{ github.sha }} .
+
+    - name: Test Docker image
+      run: docker run --rm kiddit-frontend:${{ github.sha }} echo "Docker build successful"
