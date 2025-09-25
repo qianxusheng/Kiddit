@@ -40,12 +40,12 @@ public class CommentService {
     @Autowired
     private InappropriateCommentRepository inappropriateCommentRepository;
     
-    private final GptService gptService;
+    // private final GptService gptService;
 
-    @Autowired
-    public CommentService(GptService gptService) {
-        this.gptService = gptService;
-    }
+    // @Autowired
+    // public CommentService(GptService gptService) {
+    //     this.gptService = gptService;
+    // }
 
     /**
      * Retrieves a paginated list of comments for a specific post.
@@ -147,25 +147,25 @@ public class CommentService {
     public Map<String, String> handleComment(String commentContent, Long userId, Long postId) {
         Map<String, String> response = new HashMap<>();
         
-        // Check with GPT whether the comment is appropriate
-        String gptResponse = gptService.chatWithGpt(commentContent);
-    
-        // Parse the GPT response JSON
-        JSONObject gptResponseJson = new JSONObject(gptResponse);
-        String label = gptResponseJson.optString("label");
-        String suggestion = gptResponseJson.optString("suggestion", "");  // Default to empty if no suggestion
-        // If the comment is inappropriate, store it with a label and suggestion
-        if (!label.equals("Appropriate")) {
-            // Save the inappropriate comment with its label
-            saveInappropriateComment(commentContent, label);
-        } else {
-            // If the comment is appropriate, add it to the post
+        // Check with GPT whether the comment is appropriate (DISABLED)
+        // String gptResponse = gptService.chatWithGpt(commentContent);
+
+        // Parse the GPT response JSON (DISABLED)
+        // JSONObject gptResponseJson = new JSONObject(gptResponse);
+        // String label = gptResponseJson.optString("label");
+        // String suggestion = gptResponseJson.optString("suggestion", "");  // Default to empty if no suggestion
+        // If the comment is inappropriate, store it with a label and suggestion (DISABLED)
+        // if (!label.equals("Appropriate")) {
+        //     // Save the inappropriate comment with its label
+        //     saveInappropriateComment(commentContent, label);
+        // } else {
+            // If the comment is appropriate, add it to the post (FOR NOW ALWAYS APPROPRIATE)
             addComment(postId, userId, commentContent);
-        }
+        // }
         
         // Return appropriate response (can be empty if no issue)
-        response.put("label", label);
-        response.put("suggestion", suggestion);
+        response.put("label", "Appropriate");
+        response.put("suggestion", "");
 
         return response;
     }

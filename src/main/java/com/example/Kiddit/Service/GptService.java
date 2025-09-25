@@ -8,7 +8,7 @@ import com.example.Kiddit.DataTransferObject.OpenAiResponse;
 import reactor.core.publisher.Mono;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Service
+// @Service
 public class GptService {
 
     private final WebClient webClient;
