@@ -46,7 +46,7 @@ class UserControllerTest {
         );
 
         // Act & Assert
-        mockMvc.perform(post("/api/users/register")
+        mockMvc.perform(post("/api/users/auth/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(registerRequest)))
                 .andExpect(status().isCreated());

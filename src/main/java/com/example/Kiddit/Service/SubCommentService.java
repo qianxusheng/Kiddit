@@ -38,12 +38,12 @@ public class SubCommentService {
     @Autowired
     private UserRepository userRepository;
     
-    private final GptService gptService;
+    // private final GptService gptService;
 
-    @Autowired
-    public SubCommentService(GptService gptService) {
-        this.gptService = gptService;
-    }
+    // @Autowired
+    // public SubCommentService(GptService gptService) {
+    //     this.gptService = gptService;
+    // }
 
     /**
      * Retrieves a paginated list of subcomments for a specific comment.
@@ -133,26 +133,26 @@ public class SubCommentService {
     public Map<String, String> handleSubComment(String subCommentContent, Long userId, Long commentId) {
         Map<String, String> response = new HashMap<>();
         
-        // Check with GPT whether the sub-comment is appropriate
-        String gptResponse = gptService.chatWithGpt(subCommentContent);
-    
-        // Parse the GPT response JSON
-        JSONObject gptResponseJson = new JSONObject(gptResponse);
-        String label = gptResponseJson.optString("label");
-        String suggestion = gptResponseJson.optString("suggestion", "");  // Default to empty if no suggestion
+        // Check with GPT whether the sub-comment is appropriate (DISABLED)
+        // String gptResponse = gptService.chatWithGpt(subCommentContent);
 
-        // If the sub-comment is inappropriate, store it with a label and suggestion
-        if (!label.equals("Appropriate")) {
-            // Save the inappropriate sub-comment with its label
-            saveInappropriateSubComment(subCommentContent, label);
-        } else {
-            // If the sub-comment is appropriate, add it to the comment
+        // Parse the GPT response JSON (DISABLED)
+        // JSONObject gptResponseJson = new JSONObject(gptResponse);
+        // String label = gptResponseJson.optString("label");
+        // String suggestion = gptResponseJson.optString("suggestion", "");  // Default to empty if no suggestion
+
+        // If the sub-comment is inappropriate, store it with a label and suggestion (DISABLED)
+        // if (!label.equals("Appropriate")) {
+        //     // Save the inappropriate sub-comment with its label
+        //     saveInappropriateSubComment(subCommentContent, label);
+        // } else {
+            // If the sub-comment is appropriate, add it to the comment (FOR NOW ALWAYS APPROPRIATE)
             addSubComment(commentId, userId, subCommentContent);
-        }
+        // }
 
         // Return appropriate response (can be empty if no issue)
-        response.put("label", label);
-        response.put("suggestion", suggestion);
+        response.put("label", "Appropriate");
+        response.put("suggestion", "");
 
         return response;
     }

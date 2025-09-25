@@ -17,8 +17,8 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @Autowired
-    private GptService gptService;
+    // @Autowired
+    // private GptService gptService;
     /**
      * Get a paginated list of comments for a specific post.
      *
@@ -61,12 +61,12 @@ public class CommentController {
     /**
      * Test endpoint to verify GPT service functionality
      */
-    @PostMapping("/test-gpt")
-    public String testGpt(@RequestParam String commentContent) {
-        try {
-            return gptService.chatWithGpt(commentContent);
-        } catch (Exception e) {
-            return "Error: " + e.getMessage();
-        }
-    }
+    // @PostMapping("/test-gpt")
+    // public String testGpt(@RequestParam String commentContent) {
+    //     try {
+    //         return gptService.chatWithGpt(commentContent);
+    //     } catch (Exception e) {
+    //         return "Error: " + e.getMessage();
+    //     }
+    // }
 }
