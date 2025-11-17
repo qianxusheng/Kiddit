@@ -158,8 +158,3 @@ If you want to contribute to Kiddit, please fork this project and submit a Pull 
 
 ### 10. License
 This project follows the **MIT license**. Please refer to the LICENSE file for details.
-<<<<<<< HEAD
->>>>>>> main
-=======
-
->>>>>>> main/main
